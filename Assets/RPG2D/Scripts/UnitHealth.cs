@@ -2,22 +2,30 @@
 
 public class UnitHealth : MonoBehaviour
 {
-    [SerializeField] private float maxHp;
-
+    private Actor actor;
+    private float maxHp;
     [SerializeField] private float currentHp;
 
-    private void Start()
+    public void Init(Actor actor)
     {
+        this.actor = actor;
+    }
+
+    public void SetMaxHp(float maxHp)
+    {
+        this.maxHp = maxHp;
         currentHp = maxHp;
     }
 
     public void TakeDamage(int damage)
     {
         currentHp -= damage;
+        bool isDead = false;
         if (currentHp < 0)
         {
-            Debug.Log("Destroy: " + gameObject.name);
-            Destroy(gameObject);
+            isDead = true;
         }
+
+        actor.UpdateHealthbar(currentHp / maxHp, isDead);
     }
 }
